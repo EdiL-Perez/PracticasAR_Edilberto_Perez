@@ -1,2 +1,4 @@
-# PracticasAR_Edilberto_Perez
-PRACTICAS AR Y VR
+# PracticasAR\_Edilberto\_Perez
+
+PRACTICAS AR Y VR 2026-2
+
