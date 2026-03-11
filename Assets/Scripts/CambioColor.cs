@@ -5,6 +5,7 @@ public class CambioColor : MonoBehaviour
     public GameObject model;
     //public Color colores;
     public int indiceMaterial = 2;
+    public int indiceMaterial2 = 3;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,13 +27,14 @@ public class CambioColor : MonoBehaviour
             Material[] materiales = rend.materials;
 
             
-            if (indiceMaterial < materiales.Length)
+            if (indiceMaterial < materiales.Length && indiceMaterial2 < materiales.Length)
             {
                 
-                Color colorAzar = Random.ColorHSV(0f, 1f, 0.8f, 1f, 0.8f, 1f);
-                materiales[indiceMaterial].color = colorAzar;
-
                 
+                materiales[indiceMaterial].color = Random.ColorHSV(0f, 1f, 0.8f, 1f, 0.8f, 1f);
+                materiales[indiceMaterial2].color = Random.ColorHSV(0f, 0.8f, 0.8f, 1f, 1f, 0.8f);
+
+
                 rend.materials = materiales;
             }
 
