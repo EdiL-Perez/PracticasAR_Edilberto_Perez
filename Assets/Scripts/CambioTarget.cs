@@ -46,6 +46,7 @@ public class CambioTarget : MonoBehaviour
 
         Vector3 StartPosition = modelo.transform.position;
         Vector3 EndPosition = Target.transform.position;
+        modelo.transform.LookAt(EndPosition);
 
         float trayectoria = 0;
         while (trayectoria <= 1.0f)
@@ -55,21 +56,46 @@ public class CambioTarget : MonoBehaviour
             yield return null;
         }
 
+        modelo.transform.SetParent(Target.transform);
+        modelo.transform.localPosition = Vector3.zero;
         Anim.SetBool("IsRunning", false);
-        marcadorActual = (marcadorActual+1)%ImageTargets.Length;
+
+        for (int i = 0; i < ImageTargets.Length; i++)
+        {
+            if (ImageTargets[i] == Target)
+            {
+                marcadorActual = i;
+                break;
+            }
+        }
         IsMoving = false;
     }
 
     private ObserverBehaviour TargetSiguiente()
     {
         foreach (ObserverBehaviour target in ImageTargets) {
-            if (target != null && (target.TargetStatus.Status == Status.TRACKED || target.TargetStatus.Status == Status.EXTENDED_TRACKED))
+            if (target != null)
             {
+                bool estaVisto = target.TargetStatus.Status == Status.TRACKED;
 
-                return target;
+                bool esDiferenteAlActual = target != ImageTargets[marcadorActual];
+
+                if (estaVisto && esDiferenteAlActual)
+                {
+                    for (int i = 0; i < ImageTargets.Length; i++)
+                    {
+                        if (ImageTargets[i] == target)
+                        {
+                            marcadorActual = i;
+                            break;
+                        }
+                    }
+                    return target;
+
+
+                }
+
             }
-           
-            
         }
         return null;
     }
