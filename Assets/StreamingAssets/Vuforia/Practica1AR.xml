@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
   <Tracking>
+    <ImageTarget name="logotcg" size="1.000000 1.000000" />
     <ImageTarget name="regloss" size="1.000000 1.000000" />
     <ImageTarget name="flowglowlogo" size="1.000000 0.528774" />
     <ImageTarget name="holox-logo" size="1.000000 0.562500" />

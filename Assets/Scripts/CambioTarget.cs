@@ -58,6 +58,12 @@ public class CambioTarget : MonoBehaviour
 
         modelo.transform.SetParent(Target.transform);
         modelo.transform.localPosition = Vector3.zero;
+        IdMarcador datos = Target.GetComponent<IdMarcador>();
+        if (datos != null)
+        {
+            string mensaje = GetComponent<ManagerStory>().CheckProgreso(datos.IdTarget);
+            Debug.Log(mensaje);
+        }
         Anim.SetBool("IsRunning", false);
 
         for (int i = 0; i < ImageTargets.Length; i++)

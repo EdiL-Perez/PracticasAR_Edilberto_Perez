@@ -6,6 +6,10 @@ public class ManagerStory : MonoBehaviour
     public enum EstadoHistoria { Inicio, BuscandoObjeto, Finalizado }
     public EstadoHistoria estadoActual = EstadoHistoria.Inicio;
 
+    [Header("Prefabs de la Historia")]
+    public GameObject prefabObjetoMagico;
+    public GameObject prefabFinal;
+
 
     public List<GameObject> targetsConfigurados;
 
@@ -29,24 +33,45 @@ public class ManagerStory : MonoBehaviour
         
     }
 
-    void AsignarRolesAleatorios()
+    public void AsignarRolesAleatorios()
     {
         // Creamos una lista de índices (0 a 4) y la barajamos
-        List<int> indices = new List<int> { 0, 1, 2, 3, 4 };
-        for (int i = 0; i < indices.Count; i++)
+        idTargetInicio = 0;
+        List<int> indicesHistoria = new List<int> { 1, 2, 3, 4 };
+        for (int i = 0; i < indicesHistoria.Count; i++)
         {
-            int temp = indices[i];
-            int randomIndex = Random.Range(i, indices.Count);
-            indices[i] = indices[randomIndex];
-            indices[randomIndex] = temp;
+            int temp = indicesHistoria[i];
+            int randomIndex = Random.Range(i, indicesHistoria.Count);
+            indicesHistoria[i] = indicesHistoria[randomIndex];
+            indicesHistoria[randomIndex] = temp;
         }
 
         // Asignamos roles basados en la lista barajada
-        idTargetInicio = indices[0];
-        idTargetObjeto = indices[1];
-        idTargetFinal = indices[2];
+        idTargetObjeto = indicesHistoria[0];
+        idTargetFinal = indicesHistoria[1];
 
         Debug.Log("Inicio en Target " + idTargetInicio +", Objeto en Target " + idTargetObjeto +", Final en Target " + idTargetFinal);
+
+        UbicarObjeto(prefabObjetoMagico, idTargetObjeto);
+        UbicarObjeto(prefabFinal, idTargetFinal);
+    }
+    public void UbicarObjeto(GameObject prefab, int idTarget)
+    {
+        // Buscamos el Target que tiene ese ID en nuestra lista
+        GameObject targetDestino = targetsConfigurados[idTarget];
+
+        Transform ancla = targetDestino.transform.Find("ancla");
+        if (ancla != null)
+        {
+            GameObject instancia = Instantiate(prefab, ancla);
+            instancia.transform.localPosition = Vector3.zero;
+            instancia.transform.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            GameObject instancia = Instantiate(prefab, targetDestino.transform);
+            instancia.transform.localPosition = Vector3.zero;
+        }
     }
     public string CheckProgreso(int idLlegada)
     {
