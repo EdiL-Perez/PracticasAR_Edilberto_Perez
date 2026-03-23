@@ -37,6 +37,8 @@ public class ManagerStory : MonoBehaviour
     public Sprite retratoPersonaje;
     public Sprite retratoNPC;
 
+    private bool BienvenidaMostrada = false;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -153,6 +155,15 @@ public class ManagerStory : MonoBehaviour
     public void CerrarDialogo()
     {
         panelDialogo.SetActive(false);
+    }
+    public void IniciarNarrativa()
+    {
+        if (!BienvenidaMostrada)
+        {
+            panelDialogo.SetActive(true);
+            ActualizarUI("YUKA", "Necesito encontrar mi arma", retratoPersonaje);
+            BienvenidaMostrada = true; // Ya no volverá a entrar aquí
+        }
     }
 
 
