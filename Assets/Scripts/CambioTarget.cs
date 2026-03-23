@@ -61,8 +61,7 @@ public class CambioTarget : MonoBehaviour
         IdMarcador datos = Target.GetComponent<IdMarcador>();
         if (datos != null)
         {
-            string mensaje = GetComponent<ManagerStory>().CheckProgreso(datos.IdTarget);
-            Debug.Log(mensaje);
+            GetComponent<ManagerStory>().CheckProgreso(datos.IdTarget);
         }
         Anim.SetBool("IsRunning", false);
 

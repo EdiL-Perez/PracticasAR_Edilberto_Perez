@@ -1,23 +1,41 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro; 
+using UnityEngine.UI; 
 
 public class ManagerStory : MonoBehaviour
 {
-    public enum EstadoHistoria { Inicio, BuscandoObjeto, Finalizado }
+    public enum EstadoHistoria { Inicio, HabloConNPC, TieneObjeto1, BuscandoObjeto, SabeUbicacionFinal, TieneObjetoFinal, Finalizado }
     public EstadoHistoria estadoActual = EstadoHistoria.Inicio;
 
     [Header("Prefabs de la Historia")]
-    public GameObject prefabObjetoMagico;
-    public GameObject prefabFinal;
+    public GameObject prefabNPC;
+    public GameObject prefabObjeto1;
+    public GameObject prefabObjeto2;
+    public GameObject prefabMeta;
+    //public GameObject prefabObjetoMagico;
+    //public GameObject prefabFinal;
+
 
 
     public List<GameObject> targetsConfigurados;
 
     // Aquí guardaremos cuál marcador tiene cada evento
     private int idTargetInicio;
-    private int idTargetObjeto;
-    private int idTargetFinal;
+    private int idTargetNPC;
+    private int idTargetObjeto1;
+    private int idTargetObjeto2;
+    private int idTargetMeta;
 
+    [Header("Referencias de UI")]
+    public GameObject panelDialogo;
+    public TextMeshProUGUI textoNombre;
+    public TextMeshProUGUI textoDialogo;
+    public Image imagenRetrato;
+
+    [Header("Sprites de Retratos")]
+    public Sprite retratoPersonaje;
+    public Sprite retratoNPC;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,13 +65,17 @@ public class ManagerStory : MonoBehaviour
         }
 
         // Asignamos roles basados en la lista barajada
-        idTargetObjeto = indicesHistoria[0];
-        idTargetFinal = indicesHistoria[1];
+        idTargetNPC = indicesHistoria[0];
+        idTargetObjeto1 = indicesHistoria[1];
+        idTargetObjeto2 = indicesHistoria[2];
+        idTargetMeta = indicesHistoria[3];
 
-        Debug.Log("Inicio en Target " + idTargetInicio +", Objeto en Target " + idTargetObjeto +", Final en Target " + idTargetFinal);
+        Debug.Log("Inicio en Target " + idTargetInicio +", Objeto1en Target " + idTargetObjeto1 +", objeto2 en Target " +idTargetObjeto2+"NPC Target"+idTargetNPC);
 
-        UbicarObjeto(prefabObjetoMagico, idTargetObjeto);
-        UbicarObjeto(prefabFinal, idTargetFinal);
+        UbicarObjeto(prefabNPC, idTargetNPC);
+        UbicarObjeto(prefabObjeto1, idTargetObjeto1);
+        UbicarObjeto(prefabObjeto2, idTargetObjeto2);
+        UbicarObjeto(prefabMeta, idTargetMeta);
     }
     public void UbicarObjeto(GameObject prefab, int idTarget)
     {
@@ -73,26 +95,64 @@ public class ManagerStory : MonoBehaviour
             instancia.transform.localPosition = Vector3.zero;
         }
     }
-    public string CheckProgreso(int idLlegada)
+
+    public void CheckProgreso(int idLlegada)
     {
-        if (estadoActual == EstadoHistoria.Inicio && idLlegada == idTargetInicio)
+        if (idLlegada == idTargetNPC && estadoActual == EstadoHistoria.Inicio)
         {
-            estadoActual = EstadoHistoria.BuscandoObjeto;
-            return "¡Hola! Necesito que encuentres la llave mágica.";
+            estadoActual = EstadoHistoria.HabloConNPC;
+            ActualizarUI("TSUBAKI", "¡Hola YUKA! Me enteré que buscas tu arma, creo saber donde esta pero olvide mi almohada por ahi,Si la encuentras, me la podrias traer y con gusto te digo donde puedes buscar tu arm", retratoNPC);
+            return;
         }
 
-        if (estadoActual == EstadoHistoria.BuscandoObjeto && idLlegada == idTargetObjeto)
+        if (idLlegada == idTargetObjeto1 && estadoActual == EstadoHistoria.HabloConNPC)
+        {
+            estadoActual = EstadoHistoria.TieneObjeto1;
+            ActualizarUI("YUKA", "Debe ser esta su almohada para dormir, debo entregarla a TSUBAKI", retratoPersonaje);
+            return;
+        }
+        if (idLlegada == idTargetNPC && estadoActual == EstadoHistoria.TieneObjeto1)
+        {
+            estadoActual = EstadoHistoria.SabeUbicacionFinal;
+            ActualizarUI("TSUBAKI", "Gracias por recuperar mi almohada, me parece que lo que buscas esta en la parte trasera del tanque", retratoNPC);
+            return;
+        }
+        if (idLlegada == idTargetObjeto2 && estadoActual == EstadoHistoria.SabeUbicacionFinal)
+        {
+            estadoActual = EstadoHistoria.TieneObjetoFinal;
+            ActualizarUI("YUKA", "Finalmente encontre mi arma, ahora debo ir a cumplir la mision", retratoPersonaje);
+            return;
+        }
+        if (idLlegada == idTargetMeta && estadoActual == EstadoHistoria.TieneObjetoFinal)
         {
             estadoActual = EstadoHistoria.Finalizado;
-            return "¡Encontraste la llave! Ahora ve a la salida.";
+            ActualizarUI("YUKA", "Debo apresurarme ahora que tengo todo lo necesario para la mision", retratoPersonaje);
+            return;
         }
-
-        if (estadoActual == EstadoHistoria.Finalizado && idLlegada == idTargetFinal)
+        if (idLlegada == idTargetObjeto1 && estadoActual == EstadoHistoria.Inicio)
         {
-            return "¡Felicidades! Has completado la historia.";
+            ActualizarUI("YUKA", "Hay una almohada por aqui pero de quien sera", retratoPersonaje);
+            return;
         }
 
-        return "Aquí no hay nada interesante...";
+        if (idLlegada == idTargetMeta && estadoActual != EstadoHistoria.TieneObjetoFinal)
+        {
+            ActualizarUI("YUKA", "No puedo ir a entrenar si no tengo mi arma", retratoPersonaje);
+            return;
+        }
+        ActualizarUI("YUKA", "Aqui no hay nada interesante...", retratoPersonaje);
+        return;
+    }
+
+    void ActualizarUI(string nombre, string mensaje, Sprite retrato)
+    {
+        textoNombre.text = nombre;
+        textoDialogo.text = mensaje;
+        imagenRetrato.sprite = retrato;
+    }
+    public void CerrarDialogo()
+    {
+        panelDialogo.SetActive(false);
     }
 
 
