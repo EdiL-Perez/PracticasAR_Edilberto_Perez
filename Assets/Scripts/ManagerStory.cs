@@ -12,9 +12,13 @@ public class ManagerStory : MonoBehaviour
     public GameObject prefabNPC;
     public GameObject prefabObjeto1;
     public GameObject prefabObjeto2;
+
+    public GameObject Arma;
+    public GameObject almohada;
     public GameObject prefabMeta;
     //public GameObject prefabObjetoMagico;
     //public GameObject prefabFinal;
+    public GameObject modelo;
 
 
 
@@ -98,12 +102,13 @@ public class ManagerStory : MonoBehaviour
         }
     }
 
-    public void CheckProgreso(int idLlegada)
+    public void CheckProgreso(int idLlegada )
     {
+        ControladorEquipo equipo = modelo.GetComponent<ControladorEquipo>();
         if (idLlegada == idTargetNPC && estadoActual == EstadoHistoria.Inicio)
         {
             estadoActual = EstadoHistoria.HabloConNPC;
-            ActualizarUI("TSUBAKI", "¡Hola YUKA! Me enteré que buscas tu arma, creo saber donde esta pero olvide mi almohada por ahi,Si la encuentras, me la podrias traer y con gusto te digo donde puedes buscar tu arm", retratoNPC);
+            ActualizarUI("TSUBAKI", "¡Hola YUKA! Me enteré que buscas tu arma, creo saber donde esta pero olvide mi almohada por el carro de comida,Si la encuentras, me la podrias traer y con gusto te digo donde buscar", retratoNPC);
             return;
         }
 
@@ -111,18 +116,30 @@ public class ManagerStory : MonoBehaviour
         {
             estadoActual = EstadoHistoria.TieneObjeto1;
             ActualizarUI("YUKA", "Debe ser esta su almohada para dormir, debo entregarla a TSUBAKI", retratoPersonaje);
+            if(equipo != null)
+            {
+                equipo.EquiparObjeto(almohada);
+            }
             return;
         }
         if (idLlegada == idTargetNPC && estadoActual == EstadoHistoria.TieneObjeto1)
         {
             estadoActual = EstadoHistoria.SabeUbicacionFinal;
             ActualizarUI("TSUBAKI", "Gracias por recuperar mi almohada, me parece que lo que buscas esta en la parte trasera del tanque", retratoNPC);
+            if(equipo != null)
+            {
+                equipo.Desequipar();
+            }
             return;
         }
         if (idLlegada == idTargetObjeto2 && estadoActual == EstadoHistoria.SabeUbicacionFinal)
         {
             estadoActual = EstadoHistoria.TieneObjetoFinal;
             ActualizarUI("YUKA", "Finalmente encontre mi arma, ahora debo ir a cumplir la mision", retratoPersonaje);
+            if (equipo != null)
+            {
+                equipo.EquiparObjeto(Arma);
+            }
             return;
         }
         if (idLlegada == idTargetMeta && estadoActual == EstadoHistoria.TieneObjetoFinal)
@@ -133,7 +150,7 @@ public class ManagerStory : MonoBehaviour
         }
         if (idLlegada == idTargetObjeto1 && estadoActual == EstadoHistoria.Inicio)
         {
-            ActualizarUI("YUKA", "Hay una almohada por aqui pero de quien sera", retratoPersonaje);
+            ActualizarUI("YUKA", "Hay una almohada por aqui pero de ¿quien sera?", retratoPersonaje);
             return;
         }
 

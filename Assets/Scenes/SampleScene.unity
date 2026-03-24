@@ -2135,7 +2135,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 119698035}
-  - {fileID: 1724164991}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &882165588
@@ -2391,6 +2390,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 119698036}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c45afa0df851ae459c7072374123dd3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 982635247}
   m_SourcePrefab: {fileID: 100100000, guid: 6c45afa0df851ae459c7072374123dd3, type: 3}
 --- !u!95 &982635246 stripped
 Animator:
@@ -2398,6 +2401,19 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 982635245}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &982635247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119698033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6b2c6ad94e85443b695bc9fce1581e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContraladorEquipo
+  manoSlot: {fileID: 1120596161}
 --- !u!1 &1054189417
 GameObject:
   m_ObjectHideFlags: 0
@@ -2754,7 +2770,10 @@ MonoBehaviour:
     type: 3}
   prefabObjeto2: {fileID: 919132149155446097, guid: 1b53693faf1afca43bcce6dff771b8fe,
     type: 3}
+  Arma: {fileID: 919132149155446097, guid: 948bfd30e8421e649a849d425b9ba215, type: 3}
+  almohada: {fileID: 919132149155446097, guid: 1ba09f15be77b1e4cb832209b1f5429a, type: 3}
   prefabMeta: {fileID: 306383170}
+  modelo: {fileID: 119698033}
   targetsConfigurados:
   - {fileID: 882165581}
   - {fileID: 1054189417}
@@ -3271,7 +3290,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 882165585}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c8b96359274fee045a5649e9768a57db,
         type: 3}
@@ -3343,12 +3362,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8b96359274fee045a5649e9768a57db, type: 3}
---- !u!4 &1724164991 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c8b96359274fee045a5649e9768a57db,
-    type: 3}
-  m_PrefabInstance: {fileID: 1724164990}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1933123303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3717,3 +3730,4 @@ SceneRoots:
   - {fileID: 538000087596067936}
   - {fileID: 1503257723}
   - {fileID: 766924588}
+  - {fileID: 1724164990}
