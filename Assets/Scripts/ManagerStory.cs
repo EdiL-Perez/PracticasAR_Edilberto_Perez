@@ -42,6 +42,7 @@ public class ManagerStory : MonoBehaviour
     public Sprite retratoNPC;
 
     private bool BienvenidaMostrada = false;
+    private List<GameObject> objetosInstanciados = new List<GameObject>();
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -89,16 +90,52 @@ public class ManagerStory : MonoBehaviour
         GameObject targetDestino = targetsConfigurados[idTarget];
 
         Transform ancla = targetDestino.transform.Find("ancla");
+        GameObject instancia;
         if (ancla != null)
         {
-            GameObject instancia = Instantiate(prefab, ancla);
+            instancia = Instantiate(prefab, ancla);
             instancia.transform.localPosition = Vector3.zero;
             instancia.transform.localRotation = Quaternion.identity;
         }
         else
         {
-            GameObject instancia = Instantiate(prefab, targetDestino.transform);
+            instancia = Instantiate(prefab, targetDestino.transform);
             instancia.transform.localPosition = Vector3.zero;
+        }
+        instancia.SetActive(false);
+        objetosInstanciados.Add(instancia);
+
+    }
+    public void ActivarObjetoDelTarget(int idTargetDetectado)
+    {
+        
+        GameObject marcadorVisto = targetsConfigurados[idTargetDetectado];
+
+        
+        foreach (GameObject obj in objetosInstanciados)
+        {
+            
+            if (obj.transform.IsChildOf(marcadorVisto.transform))
+            {
+                
+                obj.SetActive(true);
+            }
+        }
+    }
+    public void DesactivarObjetoDelTarget(int idTargetPerdido)
+    {
+        
+        GameObject marcadorFueraDeVista = targetsConfigurados[idTargetPerdido];
+
+        
+        foreach (GameObject obj in objetosInstanciados)
+        {
+            
+            if (obj.transform.IsChildOf(marcadorFueraDeVista.transform))
+            {
+                
+                obj.SetActive(false);
+            }
         }
     }
 
