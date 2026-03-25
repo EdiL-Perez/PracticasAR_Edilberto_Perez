@@ -24,7 +24,7 @@ public class ManagerStory : MonoBehaviour
 
     public List<GameObject> targetsConfigurados;
 
-    // Aquí guardaremos cuál marcador tiene cada evento
+    // 
     private int idTargetInicio;
     private int idTargetNPC;
     private int idTargetObjeto1;
@@ -60,7 +60,7 @@ public class ManagerStory : MonoBehaviour
 
     public void AsignarRolesAleatorios()
     {
-        // Creamos una lista de índices (0 a 4) y la barajamos
+        // 
         idTargetInicio = 0;
         List<int> indicesHistoria = new List<int> { 1, 2, 3, 4 };
         for (int i = 0; i < indicesHistoria.Count; i++)
@@ -71,7 +71,7 @@ public class ManagerStory : MonoBehaviour
             indicesHistoria[randomIndex] = temp;
         }
 
-        // Asignamos roles basados en la lista barajada
+        // Asignamos targetss
         idTargetNPC = indicesHistoria[0];
         idTargetObjeto1 = indicesHistoria[1];
         idTargetObjeto2 = indicesHistoria[2];
@@ -86,7 +86,7 @@ public class ManagerStory : MonoBehaviour
     }
     public void UbicarObjeto(GameObject prefab, int idTarget)
     {
-        // Buscamos el Target que tiene ese ID en nuestra lista
+        
         GameObject targetDestino = targetsConfigurados[idTarget];
 
         Transform ancla = targetDestino.transform.Find("ancla");
@@ -216,7 +216,7 @@ public class ManagerStory : MonoBehaviour
         {
             panelDialogo.SetActive(true);
             ActualizarUI("YUKA", "Necesito encontrar mi arma", retratoPersonaje);
-            BienvenidaMostrada = true; // Ya no volverá a entrar aquí
+            BienvenidaMostrada = true; 
         }
     }
 
