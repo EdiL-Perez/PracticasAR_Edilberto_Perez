@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using TMPro; 
 using UnityEngine.UI; 
@@ -36,6 +37,11 @@ public class ManagerStory : MonoBehaviour
     public TextMeshProUGUI textoNombre;
     public TextMeshProUGUI textoDialogo;
     public Image imagenRetrato;
+    public GameObject panelFinHistoria;
+
+    [Header("Referencia UI Perdida")]
+    public GameObject PanelAdvertencia;
+    private int MarcadoresVisibles = 0;
 
     [Header("Sprites de Retratos")]
     public Sprite retratoPersonaje;
@@ -56,6 +62,10 @@ public class ManagerStory : MonoBehaviour
     void Update()
     {
         
+    }
+    public void ReiniciarApp()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void AsignarRolesAleatorios()
@@ -117,8 +127,26 @@ public class ManagerStory : MonoBehaviour
             
             if (obj.transform.IsChildOf(marcadorVisto.transform))
             {
-                
-                obj.SetActive(true);
+
+                if (idTargetDetectado == idTargetNPC)
+                {
+                    obj.SetActive(true); // El NPC siempre se revela si llegas a él
+                }
+
+                if (idTargetDetectado == idTargetObjeto1 && estadoActual == EstadoHistoria.HabloConNPC)
+                {
+                    obj.SetActive(true); // El Amuleto solo aparece si ya hablaste con el NPC
+                }
+
+                if (idTargetDetectado == idTargetObjeto2 && estadoActual == EstadoHistoria.SabeUbicacionFinal)
+                {
+                    obj.SetActive(true); // La Llave final solo aparece en su momento
+                }
+
+                if (idTargetDetectado == idTargetMeta && estadoActual == EstadoHistoria.TieneObjetoFinal)
+                {
+                    obj.SetActive(true); // La Meta solo aparece si tienes la llave
+                }
             }
         }
     }
@@ -131,9 +159,9 @@ public class ManagerStory : MonoBehaviour
         foreach (GameObject obj in objetosInstanciados)
         {
             
-            if (obj.transform.IsChildOf(marcadorFueraDeVista.transform))
+            if (obj != null && obj.transform.IsChildOf(marcadorFueraDeVista.transform))
             {
-                
+
                 obj.SetActive(false);
             }
         }
@@ -142,6 +170,8 @@ public class ManagerStory : MonoBehaviour
     public void CheckProgreso(int idLlegada )
     {
         ControladorEquipo equipo = modelo.GetComponent<ControladorEquipo>();
+
+        ActivarObjetoDelTarget(idLlegada);
         if (idLlegada == idTargetNPC && estadoActual == EstadoHistoria.Inicio)
         {
             estadoActual = EstadoHistoria.HabloConNPC;
@@ -183,6 +213,7 @@ public class ManagerStory : MonoBehaviour
         {
             estadoActual = EstadoHistoria.Finalizado;
             ActualizarUI("YUKA", "Debo apresurarme ahora que tengo todo lo necesario para la mision", retratoPersonaje);
+            MostrarPantallaFinal();
             return;
         }
         if (idLlegada == idTargetObjeto1 && estadoActual == EstadoHistoria.Inicio)
@@ -219,6 +250,48 @@ public class ManagerStory : MonoBehaviour
             BienvenidaMostrada = true; 
         }
     }
+
+    void MostrarPantallaFinal()
+    {
+        if (panelFinHistoria != null)
+        {
+            panelFinHistoria.SetActive(true);
+        }
+    }
+
+    public void AlDetectarMarcador()
+    {
+        MarcadoresVisibles++;
+        ActualizarEstadoAlerta();
+    }
+
+    public void AlPerderMarcador()
+    {
+        MarcadoresVisibles--;
+        
+        if (MarcadoresVisibles < 0) MarcadoresVisibles = 0;
+
+        ActualizarEstadoAlerta();
+    }
+
+    void ActualizarEstadoAlerta()
+    {
+        if (MarcadoresVisibles > 0)
+        {
+            
+            PanelAdvertencia.SetActive(false);
+        }
+        else
+        {
+            
+            PanelAdvertencia.SetActive(true);
+
+
+        }
+    }
+
+
+
 
 
 
