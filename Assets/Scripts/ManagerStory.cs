@@ -130,22 +130,22 @@ public class ManagerStory : MonoBehaviour
 
                 if (idTargetDetectado == idTargetNPC)
                 {
-                    obj.SetActive(true); // El NPC siempre se revela si llegas a él
+                    obj.SetActive(true); //
                 }
 
                 if (idTargetDetectado == idTargetObjeto1 && estadoActual == EstadoHistoria.HabloConNPC)
                 {
-                    obj.SetActive(true); // El Amuleto solo aparece si ya hablaste con el NPC
+                    obj.SetActive(true); // 
                 }
 
                 if (idTargetDetectado == idTargetObjeto2 && estadoActual == EstadoHistoria.SabeUbicacionFinal)
                 {
-                    obj.SetActive(true); // La Llave final solo aparece en su momento
+                    obj.SetActive(true); //
                 }
 
                 if (idTargetDetectado == idTargetMeta && estadoActual == EstadoHistoria.TieneObjetoFinal)
                 {
-                    obj.SetActive(true); // La Meta solo aparece si tienes la llave
+                    obj.SetActive(true); 
                 }
             }
         }
